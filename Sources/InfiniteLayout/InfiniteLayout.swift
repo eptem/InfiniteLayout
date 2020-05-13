@@ -23,6 +23,8 @@ open class InfiniteLayout: UICollectionViewFlowLayout {
         }
     }
     
+    @IBInspectable public var additionalWidth: CGFloat = 0
+    
     public var currentPage: CGPoint {
         guard let collectionView = self.collectionView else {
             return .zero
@@ -252,7 +254,7 @@ open class InfiniteLayout: UICollectionViewFlowLayout {
                        y: self.scrollDirection == .vertical ? abs(rect.midY - collectionRect.origin.y - collectionRect.height/2) : collectionView.contentOffset.y)
     }
     
-    public func centerCollectionView(withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>, additionalWidth: CGFloat) {
+    public func centerCollectionView(withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         guard let collectionView = self.collectionView, self.hasValidLayout else {
             return
         }
@@ -263,10 +265,11 @@ open class InfiniteLayout: UICollectionViewFlowLayout {
             let offset =  self.centeredContentOffset(forRect: preferredAttributes.frame) else {
                 return
         }
-        targetContentOffset.pointee = offset
+        let newOffset = CGPoint(x: offset.x + additionalWidth, y: offset.y)
+        targetContentOffset.pointee = newOffset
     }
     
-    public func centerCollectionViewIfNeeded(indexPath: IndexPath? = nil, additionalWidth: CGFloat) {
+    public func centerCollectionViewIfNeeded(indexPath: IndexPath? = nil) {
         guard let collectionView = self.collectionView, self.hasValidLayout else {
             return
         }
@@ -275,7 +278,8 @@ open class InfiniteLayout: UICollectionViewFlowLayout {
             collectionView.contentOffset != offset else {
                 return
         }
-        self.updateContentOffset(offset)
+        let newOffset = CGPoint(x: offset.x + additionalWidth, y: offset.y)
+        self.updateContentOffset(newOffset)
     }
     
     // MARK: Copy
