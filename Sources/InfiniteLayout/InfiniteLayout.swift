@@ -252,7 +252,7 @@ open class InfiniteLayout: UICollectionViewFlowLayout {
                        y: self.scrollDirection == .vertical ? abs(rect.midY - collectionRect.origin.y - collectionRect.height/2) : collectionView.contentOffset.y)
     }
     
-    public func centerCollectionView(withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    public func centerCollectionView(withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>, additionalWidth: CGFloat) {
         guard let collectionView = self.collectionView, self.hasValidLayout else {
             return
         }
@@ -266,7 +266,7 @@ open class InfiniteLayout: UICollectionViewFlowLayout {
         targetContentOffset.pointee = offset
     }
     
-    public func centerCollectionViewIfNeeded(indexPath: IndexPath? = nil) {
+    public func centerCollectionViewIfNeeded(indexPath: IndexPath? = nil, additionalWidth: CGFloat) {
         guard let collectionView = self.collectionView, self.hasValidLayout else {
             return
         }
